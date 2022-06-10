@@ -1,0 +1,210 @@
+﻿<Window x:Class="Session2.ManageFlightSchedulesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Session2"
+        mc:Ignorable="d"
+        WindowStyle="ToolWindow"
+        Title="Manage Flight Schedules"
+        MinHeight="450"
+        MinWidth="900"
+        Height="550"
+        Width="900"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150" />
+            <RowDefinition />
+            <RowDefinition Height="0.3*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.ColumnSpan="4"
+              Background="{StaticResource MainBlue}"
+              Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                <TextBlock Text="From"
+                           Margin="10" />
+                <ComboBox x:Name="FromAirportComboBox"
+                          Width="130"
+                          Height="30"
+                          SelectedIndex="0"
+                          HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center" />
+            </StackPanel>
+
+
+            <StackPanel Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                <TextBlock Text="To"
+                           Margin="10" />
+                <ComboBox x:Name="ToAirportComboBox"
+                          Width="130"
+                          Height="30"
+                          SelectedIndex="0"
+                          HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center" />
+            </StackPanel>
+
+
+            <StackPanel Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                <TextBlock Text="Sort By"
+                           Margin="10" />
+                <ComboBox x:Name="SortComboBox"
+                          Width="130"
+                          Height="30"
+                          SelectedIndex="0"
+                          HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center">
+
+                    <ComboBoxItem Content="Date-time" />
+                    <ComboBoxItem Content="Economy Price" />
+                    <ComboBoxItem Content="Confirmed" />
+
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1"
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                <TextBlock Text="Outbound"
+                           Margin="10" />
+                <TextBox x:Name="OutboundTextBox"
+                         Width="130"
+                         Height="30" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                <TextBlock Text="Flight Number"
+                           Margin="10" />
+                <TextBox x:Name="FlightNumberTextBox"
+                         Width="100"
+                         Height="30" />
+            </StackPanel>
+
+            <Button x:Name="ApplyButton"
+                    Grid.Column="2"
+                    Grid.Row="1"
+                    Content="Apply"
+                    Click="ApplyButton_Click" />
+
+
+        </Grid>
+
+
+        <DataGrid Grid.Row="1"
+                  Grid.ColumnSpan="4"
+                  Margin="10"
+                  x:Name="FlightScheduleDatagrid"
+                  ColumnWidth="*"
+                  SelectionMode="Single"
+                  CanUserAddRows="False"
+                  CanUserSortColumns="False"
+                  CanUserReorderColumns="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeColumns="False"
+                  SelectionUnit="FullRow"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  SelectionChanged="FlightScheduleDatagrid_SelectionChanged">
+
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Confirmed}"
+                                     Value="True">
+                            <Setter Property="Background"
+                                    Value="White" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Confirmed}"
+                                     Value="False">
+                            <Setter Property="Background"
+                                    Value="Red" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+
+
+
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Date"
+                                    Binding="{Binding Date,StringFormat='{}{0:dd/MM/yyyy}'}" />
+                <DataGridTextColumn Header="Time"
+                                    Binding="{Binding Time}" />
+                <DataGridTextColumn Header="From"
+                                    Binding="{Binding From}"
+                                    Width="0.5*" />
+                <DataGridTextColumn Header="To"
+                                    Binding="{Binding To}"
+                                    Width="0.5*" />
+                <DataGridTextColumn Header="Flight number"
+                                    Binding="{Binding FlightNumber}" />
+                <DataGridTextColumn Header="Aircraft"
+                                    Binding="{Binding Aircraft}" />
+                <DataGridTextColumn Header="Economy Price"
+                                    Binding="{Binding EconomyPrice,StringFormat='{}{0:0.}$'}" />
+                <DataGridTextColumn Header="Business Price"
+                                    Binding="{Binding BusinessPrice,StringFormat='{}{0:0.}$'}" />
+                <DataGridTextColumn Header="First class Price"
+                                    Binding="{Binding FirstClassPrice,StringFormat='{}{0:0.}$'}" />
+            </DataGrid.Columns>
+
+
+        </DataGrid>
+
+
+        <Button x:Name="ConfirmCancelButton"
+                Grid.Column="0"
+                Grid.Row="2"
+                Content="Confirm Flight"
+                Background="ForestGreen"
+                Click="ConfirmCancelButton_Click" />
+
+        <Button x:Name="EditFlightButton"
+                Grid.Column="1"
+                Grid.Row="2"
+                Content="Edit Flight"
+                Click="EditFlightButton_Click" />
+
+
+        <Button x:Name="ImportChangesButton"
+                Grid.Column="3"
+                Grid.Row="2"
+                Content="Import Changes"
+                Click="ImportChangesButton_Click"
+                />
+
+
+    </Grid>
+</Window>
